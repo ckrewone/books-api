@@ -1,10 +1,12 @@
 import { Container } from 'inversify';
-import { API_TYPES, bootstrap } from './Bootstrap';
+import 'reflect-metadata';
+import API_TYPES from './ApiTypes';
+import { bootstrap } from './Bootstrap';
 import { AppConfig } from './config/AppConfig';
 import { HttpServer } from './http/HttpServer';
 import { JsonConfigProvider } from './service/provider/JsonConfigProvider';
 
-const APP_CONFIG_FILE = 'app-config';
+const APP_CONFIG_FILE = 'app-config.json';
 
 const container = new Container();
 const configProvider = new JsonConfigProvider(APP_CONFIG_FILE);
@@ -21,7 +23,11 @@ const configProvider = new JsonConfigProvider(APP_CONFIG_FILE);
     }
 
     bootstrap(container, appConfig);
-    const server = container.get<HttpServer>(API_TYPES.HttpServer);
-    server.start();
+    try {
+        const server = container.get<HttpServer>(API_TYPES.HttpServer);
+        server.start();
+    } catch (e) {
+        console.log(e);
+    }
 })();
 

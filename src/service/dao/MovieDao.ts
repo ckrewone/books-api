@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { API_TYPES } from '../../Bootstrap';
+import API_TYPES from '../../ApiTypes';
 import { AppConfig } from '../../config/AppConfig';
 import { DbTypes } from '../../config/DbTypes';
 import { IMovie } from '../../repository/MovieRepository/IMovie';

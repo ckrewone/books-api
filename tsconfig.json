@@ -1,6 +1,8 @@
 {
   "allowJs": true,
   "compilerOptions": {
+    "types": ["reflect-metadata"],
+    "moduleResolution": "node",
     "outDir": "./lib",
     "noImplicitAny": false,
     "target": "es2018",
@@ -27,7 +29,6 @@
   "exclude": [
     "./node_modules/**/*",
     "./__tests__/**/*",
-    "./lib/**/*",
-    "./stubs/**/*"
+    "./lib/**/*"
   ]
 }

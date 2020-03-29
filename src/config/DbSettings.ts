@@ -1,6 +1,8 @@
+import { injectable } from 'inversify';
 import { DbTypes } from './DbTypes';
 import { ISettings } from './ISettings';
 
+@injectable()
 export class DbSettings implements ISettings {
     private _type: DbTypes;
     private _path: string;
