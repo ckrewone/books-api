@@ -1,7 +1,8 @@
-import { IMovie } from './IMovie';
+import { Movie } from '../../model/Movie';
 
 export interface IMovieRepository {
-    getByGenres(...genres: string[]): IMovie[];
+    getByGenres(...genres: string[]): Movie[];
     getAllGeners(): string[];
-    getById(id: string): IMovie
+    getById(id: string): Movie
+    getAll() : Movie[];
 }

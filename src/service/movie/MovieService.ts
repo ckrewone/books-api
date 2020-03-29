@@ -1,8 +1,9 @@
 import { inject, injectable } from 'inversify';
-import API_TYPES from '../ApiTypes';
-import { IMovie } from '../repository/MovieRepository/IMovie';
-import { IMovieRepository } from '../repository/MovieRepository/IMovieRepository';
-import { IMovieDataAccessOperations } from './dao/IMovieDataAccessOperations';
+import API_TYPES from '../../ApiTypes';
+import { Movie } from '../../model/Movie';
+import { IMovie } from '../../repository/MovieRepository/IMovie';
+import { IMovieRepository } from '../../repository/MovieRepository/IMovieRepository';
+import { IMovieDataAccessOperations } from '../dao/IMovieDataAccessOperations';
 import { IMovieService } from './IMovieService';
 
 @injectable()
@@ -18,6 +19,14 @@ export class MovieService implements IMovieService {
             const film: IMovie = await this.movieRepository.getById(movie.id);
             return '';
 
+        }
+    }
+
+    public async getMovies(id:string) : Promise<Movie[]> {
+        if(id){
+            return [this.movieRepository.getById(id)];
+        } else {
+            return this.movieRepository.getAll();
         }
     }
 

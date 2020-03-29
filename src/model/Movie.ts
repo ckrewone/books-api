@@ -13,7 +13,6 @@ export class Movie {
 
     constructor(data: IMovie) {
         Object.keys(data).forEach((key: string) => {
-            // @ts-ignore
             this[key] = data[key];
         });
     }
@@ -38,7 +37,7 @@ export class Movie {
         return this._year;
     }
 
-    set yaer( year: number ) {
+    set year( year: number ) {
         this._year = year;
     }
 

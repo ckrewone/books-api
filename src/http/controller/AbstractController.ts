@@ -3,6 +3,9 @@ import { injectable } from 'inversify';
 
 @injectable()
 export class AbstractController {
+    constructor() {
+    }
+
     public sendSuccessResponse(res: Response, data: Record<string, any>): any {
         res.status(200).send(data);
     }
