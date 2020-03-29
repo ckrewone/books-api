@@ -7,6 +7,7 @@ const API_TYPES = {
     MovieDaoFactory: Symbol.for('MovieDaoFactory'),
     JsonMovieDao: Symbol.for('JsonMovieDao'),
     HttpServer: Symbol.for('HttpServer'),
+    ControllerHandler: Symbol.for('ControllerHandler'),
 };
 
 export default API_TYPES;

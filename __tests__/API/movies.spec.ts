@@ -5,7 +5,7 @@ import * as request from 'supertest';
 
 describe('movies', () => {
     it('get /movie', (done) => {
-        request('localhost:8080').get('/movie/1')
+        request('localhost:8080').get('/movie?id=1')
             .set('Accept', 'application/json')
             .set('Content-type', 'application/json')
             .end((err, res) => {

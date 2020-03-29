@@ -24,7 +24,7 @@ const configProvider = new JsonConfigProvider(APP_CONFIG_FILE);
 
     bootstrap(container, appConfig);
     try {
-        const server = new HttpServer(appConfig, container.get(API_TYPES.MovieController));
+        const server: HttpServer = container.get(API_TYPES.HttpServer);
         server.start();
     } catch (e) {
         console.log(e);
