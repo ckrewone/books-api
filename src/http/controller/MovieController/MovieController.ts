@@ -36,8 +36,8 @@ export class MovieController extends AbstractController implements IMovieControl
 
     public async update(req: Request, res: Response) {
         try {
-            const id = await this.movieService.updateMovie(req.body);
-            this.sendSuccessResponse(res, { id });
+            const movie = await this.movieService.updateMovie(req.body);
+            this.sendSuccessResponse(res, movie);
         } catch (e) {
             this.sendErrorResponse(res, e, 400);
         }
@@ -48,7 +48,8 @@ export class MovieController extends AbstractController implements IMovieControl
             const id = await this.movieService.createMovie(req.body);
             this.sendSuccessResponse(res, { id });
         } catch (e) {
-            this.sendErrorResponse(res, e, 400);
+            console.log('Creating movie failed. Error: ' + e);
+            this.sendErrorResponse(res, e.errors, 400);
         }
     }
 
@@ -57,6 +58,7 @@ export class MovieController extends AbstractController implements IMovieControl
         if (movies && movies.length) {
             this.sendSuccessResponse(res, movies);
         } else {
+            console.log(`Movie with id: ${req.query.id} failed`);
             this.sendErrorResponse(res, 'Movie/s not found', 404);
         }
     }

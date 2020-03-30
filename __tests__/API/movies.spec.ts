@@ -4,9 +4,10 @@ import * as request from 'supertest';
 
 
 describe('movies', () => {
+    const API_ULR = 'localhost:8081';
     describe('get', () => {
         it('should get /movie by id', (done) => {
-            request('localhost:8081').get('/movie?id=1')
+            request(API_ULR).get('/movie?id=1')
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
                 .end((err, res) => {
@@ -18,7 +19,7 @@ describe('movies', () => {
         });
 
         it('should not get /movie by invalid id and return 404', (done) => {
-            request('localhost:8081').get('/movie?id=invalid')
+            request(API_ULR).get('/movie?id=invalid')
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
                 .end((err, res) => {
@@ -30,8 +31,8 @@ describe('movies', () => {
         });
     });
 
-    describe('create', () => {
-        it('should create /movie', (done) => {
+    describe('create/delete', () => {
+        it('should create and delete /movie', (done) => {
             const validBody = {
                 id: 12345,
                 title: 'title',
@@ -41,12 +42,12 @@ describe('movies', () => {
                 actors: '',
                 plot: '',
                 posterUrl: '',
-                geners: [
+                genres: [
                     'Action',
                 ],
             };
 
-            request('localhost:8081').post('/movie')
+            request(API_ULR).post('/movie')
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
                 .send(validBody)
@@ -55,7 +56,15 @@ describe('movies', () => {
                         return done(err);
                     }
                     expect(res.body.id).toBe(validBody.id);
-                    done();
+                    request(API_ULR).delete('/movie')
+                        .set('Accept', 'application/json')
+                        .set('Content-type', 'application/json')
+                        .send({ id: validBody.id })
+                        .end((err1, res1) => {
+                            expect(res1.status).toBe(200);
+                            expect(res1.body.success).toBeTruthy();
+                            done();
+                        });
                 });
         });
 
@@ -69,12 +78,12 @@ describe('movies', () => {
                 actors: '',
                 plot: '',
                 posterUrl: '',
-                geners: [
+                genres: [
                     'Action',
                 ],
             };
 
-            request('localhost:8081').post('/movie')
+            request(API_ULR).post('/movie')
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
                 .send(validBody)
@@ -82,11 +91,101 @@ describe('movies', () => {
                     if (err) {
                         return done(err);
                     }
-                    console.log(res.status);
                     expect(res.status).toBe(400);
+                    expect(res.body).toBeDefined();
                     done();
                 });
         });
+    });
+
+    describe('update', () => {
+
+        it('should update /movie', (done) => {
+            const randomRuntime = Math.floor(Math.random() * 100);
+            const validBody = {
+                id: 1,
+                runtime: randomRuntime,
+            };
+            request(API_ULR).patch('/movie')
+                .set('Accept', 'application/json')
+                .set('Content-type', 'application/json')
+                .send(validBody)
+                .end((err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+                    expect(res.status).toBe(200);
+                    expect(res.body.runtime).toBe(randomRuntime);
+                    done();
+                });
+        });
+
+        it('should not update /movie with invalid data', (done) => {
+            const validBody = {
+                id: 1,
+                runtime: true,
+            };
+            request(API_ULR).patch('/movie')
+                .set('Accept', 'application/json')
+                .set('Content-type', 'application/json')
+                .send(validBody)
+                .end((err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+                    expect(res.status).toBe(400);
+                    expect(res.body).toBeDefined();
+                    done();
+                });
+        });
+    });
+
+    describe('getRandom', () => {
+        it('should get random by duration', (done) => {
+            const duration = 100;
+            request(API_ULR).post('/movie/random')
+                .set('Accept', 'application/json')
+                .set('Content-type', 'application/json')
+                .send({
+                    duration,
+                })
+                .end((err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+                    console.log(res.body);
+                    expect(res.status).toBe(200);
+                    expect(res.body.movies.length).toBe(1);
+                    expect(res.body.movies[0].runtime > duration - 10 && res.body.movies[0].runtime < duration + 10).toBeTruthy()
+                    done();
+                });
+        });
+        it('should get random by duration and genres', (done) => {
+            const body = {
+                duration: 150,
+                genres: [
+                    "Action",
+                    "Fantasy",
+                ],
+            }
+            request(API_ULR).post('/movie/random')
+                .set('Accept', 'application/json')
+                .set('Content-type', 'application/json')
+                .send(body)
+                .end((err, res) => {
+                    if (err) {
+                        return done(err);
+                    }
+                    expect(res.status).toBe(200);
+                    expect(res.body.movies.length).toBe(2);
+                    expect(res.body.movies[0].genres[0]).toBe(body.genres[0]);
+                    expect(res.body.movies[0].genres[1]).toBe(body.genres[1]);
+                    expect(res.body.movies[1].genres[0]).not.toBe(body.genres[1]);
+                    expect(res.body.movies[1].genres[1]).toBe(body.genres[1]);
+                    done();
+                });
+        });
+
     });
 
 });

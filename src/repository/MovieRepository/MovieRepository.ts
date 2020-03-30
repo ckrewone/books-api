@@ -7,30 +7,32 @@ import { IMovieRepository } from './IMovieRepository';
 
 @injectable()
 export class MovieRepository implements IMovieRepository {
+    private movieRepository: IMovieRepository;
     constructor(
         @inject(API_TYPES.AppConfig) private appConfig: AppConfig,
         @inject(API_TYPES.MovieRepositoryFactory) private movieRepositoryFactory: (dbType: DbTypes) => IMovieRepository,
     ) {
+        this.movieRepository = this.movieRepositoryFactory(this.appConfig.dbSettings.type);
     }
 
-    public getAll(): Movie[] {
-        return this.movieRepositoryFactory(this.appConfig.dbSettings.type).getAll();
+    public getAll(): Promise<Movie[]> {
+        return this.movieRepository.getAll();
     }
 
-    public getById(id: number): Movie {
-        return this.movieRepositoryFactory(this.appConfig.dbSettings.type).getById(id);
+    public getById(id: number): Promise<Movie> {
+        return this.movieRepository.getById(id);
     }
 
-    public getOneByDuration(duration): Movie {
-        return this.movieRepositoryFactory(this.appConfig.dbSettings.type).getOneByDuration(duration);
+    public getOneByDuration(duration): Promise<Movie> {
+        return this.movieRepository.getOneByDuration(duration);
     }
 
-    public getOneRandom(): Movie {
-        return this.movieRepositoryFactory(this.appConfig.dbSettings.type).getOneRandom();
+    public getOneRandom(): Promise<Movie> {
+        return this.movieRepository.getOneRandom();
     }
 
     public getPreferedGenres(): string[] {
-        return this.movieRepositoryFactory(this.appConfig.dbSettings.type).getPreferedGenres();
+        return this.movieRepository.getPreferedGenres();
     }
 
 }

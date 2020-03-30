@@ -23,6 +23,6 @@ export class MovieDao implements IMovieDataAccessOperations {
     }
 
     public async update(data: Movie): Promise<boolean> {
-        return this.movieDaoFactory(this.appConfig.dbSettings.type).add(data);
+        return this.movieDaoFactory(this.appConfig.dbSettings.type).update(data);
     }
 }

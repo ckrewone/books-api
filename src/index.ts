@@ -9,12 +9,14 @@ import { JsonConfigProvider } from './service/provider/JsonConfigProvider';
 
 const args = minimist(process.argv.slice(2));
 let APP_CONFIG_FILE;
-if(args.testing) {
+if (args.testing) {
     console.log('Application is running in testing mode.')
     APP_CONFIG_FILE = './testing-app-config.json';
 } else {
     APP_CONFIG_FILE = './app-config.json';
 }
+
+console.log(APP_CONFIG_FILE);
 
 const container = new Container();
 const configProvider = new JsonConfigProvider(APP_CONFIG_FILE);

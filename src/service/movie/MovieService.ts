@@ -23,32 +23,53 @@ export class MovieService implements IMovieService {
             }
         }
         const newMovie = new Movie(movie);
-        try {
-            await this.movieDao.add(newMovie);
-            return newMovie.id;
-        } catch (e) {
-            throw new Error(e.errors);
-        }
+        await this.movieDao.add(newMovie);
+        return newMovie.id;
     }
 
-    public async updateMovie(movie: IMovie): Promise<number> {
+    public async updateMovie(movie: IMovie): Promise<Movie> {
         const repoMovie: Movie = await this.movieRepository.getById(movie.id);
         if (!repoMovie) {
             throw new Error('Updating movie failed. Movie not found');
         }
-        const newMovie = new Movie(movie);
-        await this.movieDao.update(newMovie);
-        return newMovie.id;
+        if (movie.director) {
+            repoMovie.director = movie.director;
+        }
+        if (movie.actors) {
+            repoMovie.actors = movie.actors;
+        }
+        if (movie.genres) {
+            repoMovie.genres = movie.genres;
+        }
+        if (movie.plot) {
+            repoMovie.plot = movie.plot;
+        }
+        if (movie.posterUrl) {
+            repoMovie.posterUrl = movie.posterUrl;
+        }
+        if (movie.runtime) {
+            repoMovie.runtime = movie.runtime;
+        }
+        if (movie.title) {
+            repoMovie.title = movie.title;
+        }
+        if (movie.year) {
+            repoMovie.year = movie.year;
+        }
+        console.log('updated movie');
+        console.log(repoMovie);
+        await this.movieDao.update(repoMovie);
+        return repoMovie;
     }
 
     public async getMovies(id: number): Promise<Movie[]> {
         if (id) {
-            const movie = this.movieRepository.getById(id);
+            const movie = await this.movieRepository.getById(id);
             if (movie) {
-                return [ this.movieRepository.getById(id) ];
+                return [ await this.movieRepository.getById(id) ];
             }
         } else {
-            return this.movieRepository.getAll();
+            return await this.movieRepository.getAll();
         }
     }
 
@@ -68,7 +89,8 @@ export class MovieService implements IMovieService {
                 }
             }
             if (duration) {
-                return [await this.movieRepository.getOneByDuration(duration)];
+                const movie = await this.movieRepository.getOneByDuration(duration);
+                return [movie];
             }
             return [await this.movieRepository.getOneRandom()];
     }

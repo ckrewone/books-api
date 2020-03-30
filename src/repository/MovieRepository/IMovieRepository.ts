@@ -1,9 +1,9 @@
 import { Movie } from '../../model/Movie';
 
 export interface IMovieRepository {
-    getOneByDuration(duration): Movie;
-    getById(id: number): Movie;
-    getOneRandom(): Movie;
-    getAll(): Movie[];
+    getOneByDuration(duration): Promise<Movie>;
+    getById(id: number): Promise<Movie>;
+    getOneRandom(): Promise<Movie>;
+    getAll(): Promise<Movie[]>;
     getPreferedGenres(): string[];
 }

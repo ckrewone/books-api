@@ -18,7 +18,7 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
 
     public async delete(data: Movie): Promise<boolean> {
         const allMovies = await this.movieRepository.getAll();
-        const index = allMovies.findIndex((m) => m.id === data.id);
+        const index = allMovies.findIndex((m) => m.id == data.id);
         if (index === -1 ) { throw new Error('Deleting data failed. Movie not found'); }
         allMovies.splice(index, 1);
         return await this.saveMovies(allMovies);
@@ -34,21 +34,36 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
     public async update(data: Movie): Promise<boolean> {
         await this.movieValidator.validate(data);
         const allMovies = await this.movieRepository.getAll();
-        const index = allMovies.findIndex((m) => m.id === data.id);
+        const index = allMovies.findIndex((m) => m.id == data.id);
         if (index === -1 ) { throw new Error('Updating data failed. Movie not found'); }
         allMovies[index] = data;
         return await this.saveMovies(allMovies);
     }
 
     private async saveMovies(movies: Movie[]): Promise<boolean> {
-        const buffer = fs.readFileSync(this.appConfig.dbSettings.path);
-        const jsonData = JSON.parse(buffer.toString());
-        if (jsonData.movies) {
-            jsonData.movies = movies;
-            fs.writeFileSync(this.appConfig.dbSettings.path, jsonData);
-            return true;
+        try {
+            const buffer = fs.readFileSync(this.appConfig.dbSettings.path);
+            const jsonData = JSON.parse(buffer.toString());
+            if (jsonData.movies) {
+                jsonData.movies = movies.map((movie) => ({
+                    id: movie.id,
+                    title: movie.title,
+                    year: movie.year,
+                    runtime: movie.runtime,
+                    director: movie.director,
+                    actors: movie.actors,
+                    plot: movie.plot,
+                    posterUrl: movie.posterUrl,
+                    genres: movie.genres,
+                }));
+                fs.writeFileSync(this.appConfig.dbSettings.path, JSON.stringify(jsonData));
+                return true;
+            }
+            return false;
+        } catch (e) {
+            console.log('error creating movie');
+            console.log(e);
         }
-        return false;
-    }
+        }
 
 }

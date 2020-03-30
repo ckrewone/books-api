@@ -12,28 +12,27 @@ export class JsonMovieRepository implements IMovieRepository {
     constructor(
         @inject(API_TYPES.AppConfig) private appConfig: AppConfig,
     ) {
-        const buffer = fs.readFileSync(appConfig.dbSettings.path);
-        const data = JSON.parse(buffer.toString());
-        data.movies.forEach((movie) => {
-            this.movies.push(new Movie(movie));
-        });
-        this.genres = data.genres;
+        this.syncData();
     }
 
-    public getById(id: number): Movie {
-        return this.movies.find((movie) => movie.id === id);
+    public async getById(id: number): Promise<Movie> {
+        await this.syncData();
+        return this.movies.find((movie) => movie.id == id);
     }
 
-    public getAll(): Movie[] {
+    public async getAll(): Promise<Movie[]> {
+        await this.syncData();
         return this.movies;
     }
 
-    public getOneByDuration(duration: number): Movie {
-        const moviesByDuration: Movie[] = this.movies.filter((movie) => movie.runtime > duration - 10 && movie.runtime < duration + 10);
+    public async getOneByDuration(duration: number): Promise<Movie> {
+        await this.syncData();
+        const moviesByDuration: Movie[] = this.movies.filter((movi) => movi.runtime > duration - 10 && movi.runtime < duration + 10);
         return moviesByDuration[this.getRandomIndex(moviesByDuration.length)];
     }
 
-    public getOneRandom(): Movie {
+    public async getOneRandom(): Promise<Movie> {
+        await this.syncData();
         return this.movies[this.getRandomIndex(this.movies.length)];
     }
 
@@ -42,7 +41,18 @@ export class JsonMovieRepository implements IMovieRepository {
     }
 
     private getRandomIndex(arrayLength: number): number {
-        return Math.floor(Math.random() * 100) % (arrayLength - 1);
+        return Math.floor(Math.random() * 100) % arrayLength;
+    }
+
+    private async syncData() {
+        this.movies = [];
+        this.genres = [];
+        const buffer = fs.readFileSync(this.appConfig.dbSettings.path);
+        const data = JSON.parse(buffer.toString());
+        data.movies.forEach((movie) => {
+            this.movies.push(new Movie(movie));
+        });
+        this.genres = data.genres;
     }
 
 
