@@ -1,10 +1,10 @@
-import {IMovieValidator} from "./IMovieValidator";
-import {Movie} from "../../model/Movie";
 import {inject, injectable} from "inversify";
-import API_TYPES from "../../ApiTypes";
-import {IMovieRepository} from "../../repository/MovieRepository/IMovieRepository";
-import * as yup from "yup";
 import * as union from 'lodash.union';
+import * as yup from "yup";
+import API_TYPES from "../../ApiTypes";
+import {Movie} from "../../model/Movie";
+import {IMovieRepository} from "../../repository/MovieRepository/IMovieRepository";
+import {IMovieValidator} from "./IMovieValidator";
 
 @injectable()
 export class MovieValidator implements IMovieValidator {
@@ -22,7 +22,7 @@ export class MovieValidator implements IMovieValidator {
 
     constructor(
         @inject(API_TYPES.MovieRepository) private movieRepository: IMovieRepository,
-    ){
+    ) {
     }
 
     public async validate(movie: Movie): Promise<boolean> {

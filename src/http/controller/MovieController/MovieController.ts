@@ -7,7 +7,7 @@ import { AbstractController } from '../AbstractController';
 import { IMovieController } from './IMovieController';
 
 @injectable()
-export class MovieController extends AbstractController implements IMovieController{
+export class MovieController extends AbstractController implements IMovieController {
     constructor(
         @inject(API_TYPES.MovieService) private movieService: IMovieService,
     ) {

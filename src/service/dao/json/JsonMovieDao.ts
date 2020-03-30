@@ -4,8 +4,8 @@ import API_TYPES from "../../../ApiTypes";
 import {AppConfig} from "../../../config/AppConfig";
 import {Movie} from "../../../model/Movie";
 import {IMovieRepository} from "../../../repository/MovieRepository/IMovieRepository";
-import { IMovieDataAccessOperations } from '../IMovieDataAccessOperations';
 import {IMovieValidator} from "../../validator/IMovieValidator";
+import { IMovieDataAccessOperations } from '../IMovieDataAccessOperations';
 
 @injectable()
 export class JsonMovieDao implements IMovieDataAccessOperations {

@@ -11,7 +11,7 @@ describe('movies', () => {
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
                 .end((err, res) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
                     expect(res.body.length).toBe(1);
                     expect(res.body[0].id).toBe(1);
                     done();
@@ -23,7 +23,7 @@ describe('movies', () => {
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
                 .end((err, res) => {
-                    if (err) return done(err);
+                    if (err) { return done(err); }
                     expect(res.status).toBe(404);
                     expect(res.body.message).toBeDefined();
                     done();
@@ -156,7 +156,7 @@ describe('movies', () => {
                     console.log(res.body);
                     expect(res.status).toBe(200);
                     expect(res.body.movies.length).toBe(1);
-                    expect(res.body.movies[0].runtime > duration - 10 && res.body.movies[0].runtime < duration + 10).toBeTruthy()
+                    expect(res.body.movies[0].runtime > duration - 10 && res.body.movies[0].runtime < duration + 10).toBeTruthy();
                     done();
                 });
         });
@@ -167,7 +167,7 @@ describe('movies', () => {
                     "Action",
                     "Fantasy",
                 ],
-            }
+            };
             request(API_ULR).post('/movie/random')
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
