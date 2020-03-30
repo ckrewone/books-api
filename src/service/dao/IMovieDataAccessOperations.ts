@@ -1,6 +1,7 @@
-import { IMovie } from '../../repository/MovieRepository/IMovie';
+import {Movie} from "../../model/Movie";
 
 export interface IMovieDataAccessOperations {
-    save(data: IMovie): Promise<boolean>;
-    delete(data: IMovie): Promise<boolean>;
+    add(data: Movie): Promise<boolean>;
+    update(data: Movie): Promise<boolean>;
+    delete(data: Movie): Promise<boolean>;
 }

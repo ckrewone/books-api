@@ -14,22 +14,47 @@ export class MovieController extends AbstractController implements IMovieControl
         super();
     }
 
-    public delete(req: Request, res: Response) {
+    public async delete(req: Request, res: Response) {
+        try {
+            await this.movieService.deleteMovie(req.body.id);
+            this.sendSuccessResponse(res, {success: true});
+        } catch (e) {
+            console.log('Deleting movie failed. Error: ' +  e);
+            this.sendErrorResponse(res, e, 400);
+        }
     }
 
-    public getRandom(req: Request, res: Response) {
+    public async getRandom(req: Request, res: Response) {
+        try {
+            const randoms = await this.movieService.getRandom(req.body.genres, req.body.duration);
+            this.sendSuccessResponse(res,  {movies: randoms});
+        } catch (e) {
+            console.log('Unable to get random movie/s. Error: ' + e );
+            this.sendErrorResponse(res, e, 400);
+        }
     }
 
-    public update(req: Request, res: Response) {
+    public async update(req: Request, res: Response) {
+        try {
+            const id = await this.movieService.updateMovie(req.body);
+            this.sendSuccessResponse(res, { id });
+        } catch (e) {
+            this.sendErrorResponse(res, e, 400);
+        }
     }
 
     public async create(req: Request, res: Response) {
-        const id = await this.movieService.upsertMovie()
+        try {
+            const id = await this.movieService.createMovie(req.body);
+            this.sendSuccessResponse(res, { id });
+        } catch (e) {
+            this.sendErrorResponse(res, e, 400);
+        }
     }
 
     public async get(req: Request, res: Response) {
         const movies: Movie[] = await this.movieService.getMovies(req.query.id);
-        if(movies && movies.length) {
+        if (movies && movies.length) {
             this.sendSuccessResponse(res, movies);
         } else {
             this.sendErrorResponse(res, 'Movie/s not found', 404);

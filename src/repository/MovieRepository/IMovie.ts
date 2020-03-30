@@ -1,5 +1,5 @@
 export interface IMovie {
-    id: string;
+    id: number;
     title: string;
     year: number;
     runtime: number;
@@ -7,5 +7,5 @@ export interface IMovie {
     actors?: string;
     plot?: string;
     posterUrl?: string;
-    geners: string[];
+    genres: string[];
 }

@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import API_TYPES from '../../ApiTypes';
 import { AppConfig } from '../../config/AppConfig';
 import { DbTypes } from '../../config/DbTypes';
-import { IMovie } from '../../repository/MovieRepository/IMovie';
+import {Movie} from "../../model/Movie";
 import { IMovieDataAccessOperations } from './IMovieDataAccessOperations';
 
 @injectable()
@@ -14,11 +14,15 @@ export class MovieDao implements IMovieDataAccessOperations {
     ) {
     }
 
-    public delete(data: IMovie): Promise<boolean> {
+    public delete(data: Movie): Promise<boolean> {
         return this.movieDaoFactory(this.appConfig.dbSettings.type).delete(data);
     }
 
-    public async save(data: IMovie): Promise<boolean> {
-        return this.movieDaoFactory(this.appConfig.dbSettings.type).save(data);
+    public async add(data: Movie): Promise<boolean> {
+        return this.movieDaoFactory(this.appConfig.dbSettings.type).add(data);
+    }
+
+    public async update(data: Movie): Promise<boolean> {
+        return this.movieDaoFactory(this.appConfig.dbSettings.type).add(data);
     }
 }
