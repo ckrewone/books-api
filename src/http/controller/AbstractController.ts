@@ -11,6 +11,6 @@ export class AbstractController {
     }
 
     public sendErrorResponse(res: Response, message: string|Record<string, any>, code: number) {
-        res.status(code).send(message);
+        res.status(code).send({ message });
     }
 }

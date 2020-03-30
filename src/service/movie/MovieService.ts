@@ -14,17 +14,33 @@ export class MovieService implements IMovieService {
     ) {
     }
 
-    public async upsertMovie(movie: IMovie): Promise<string> {
+    public async createMovie(movie: Movie): Promise<string> {
         if (movie.id) {
-            const film: IMovie = await this.movieRepository.getById(movie.id);
-            return '';
-
+            const repoMovie: IMovie = await this.movieRepository.getById(movie.id);
+            if(repoMovie) {
+                throw new Error(`Movie with id ${movie.id} arleady exist`);
+            }
         }
+        const newMovie = new Movie(movie);
+        try{
+            await newMovie.isValid();
+        } catch (e) {
+            console.log(e);
+            throw new Error(e);
+        }
+
+    }
+
+    public async updateMovie(movie: Movie): Promise<string> {
+        return '';
     }
 
     public async getMovies(id:string) : Promise<Movie[]> {
         if(id){
-            return [this.movieRepository.getById(id)];
+            const movie = this.movieRepository.getById(id);
+            if(movie) {
+                return [ this.movieRepository.getById(id) ];
+            }
         } else {
             return this.movieRepository.getAll();
         }

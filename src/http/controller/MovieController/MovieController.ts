@@ -20,12 +20,19 @@ export class MovieController extends AbstractController implements IMovieControl
     public getRandom(req: Request, res: Response) {
     }
 
-    public upsert(req: Request, res: Response) {
+    public update(req: Request, res: Response) {
+    }
+
+    public async create(req: Request, res: Response) {
+        const id = await this.movieService.upsertMovie()
     }
 
     public async get(req: Request, res: Response) {
-        console.log(req);
         const movies: Movie[] = await this.movieService.getMovies(req.query.id);
-        super.sendSuccessResponse(res, movies);
+        if(movies && movies.length) {
+            this.sendSuccessResponse(res, movies);
+        } else {
+            this.sendErrorResponse(res, 'Movie/s not found', 404);
+        }
     }
 }

@@ -29,7 +29,7 @@ export class MovieRepository implements IMovieRepository {
     }
 
     public getById(id: string): Movie {
-        return this.movies.find(movie => movie.id === id);
+        return this.movies.find(movie => movie.id == id);
     }
 
     public getAll(): Movie[] {
