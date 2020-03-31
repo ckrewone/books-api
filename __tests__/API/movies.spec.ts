@@ -7,13 +7,13 @@ describe('movies', () => {
     const API_ULR = 'localhost:8081';
     describe('get', () => {
         it('should get /movie by id', (done) => {
-            request(API_ULR).get('/movie?id=1')
+            request(API_ULR).get('/movie?id=2')
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
                 .end((err, res) => {
                     if (err) { return done(err); }
                     expect(res.body.length).toBe(1);
-                    expect(res.body[0].id).toBe(1);
+                    expect(res.body[0].id).toBe(2);
                     done();
                 });
         });
@@ -24,7 +24,7 @@ describe('movies', () => {
                 .set('Content-type', 'application/json')
                 .end((err, res) => {
                     if (err) { return done(err); }
-                    expect(res.status).toBe(404);
+                    expect(res.status).toBe(400);
                     expect(res.body.message).toBeDefined();
                     done();
                 });
@@ -103,8 +103,17 @@ describe('movies', () => {
         it('should update /movie', (done) => {
             const randomRuntime = Math.floor(Math.random() * 100);
             const validBody = {
-                id: 1,
+                id: 2,
+                title: 'title',
+                year: 1911,
                 runtime: randomRuntime,
+                director: 'Tester Test',
+                actors: '',
+                plot: '',
+                posterUrl: '',
+                genres: [
+                    'Action',
+                ],
             };
             request(API_ULR).patch('/movie')
                 .set('Accept', 'application/json')

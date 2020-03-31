@@ -1,5 +1,5 @@
-import {Movie} from "../../model/Movie";
+import {IMovie} from "../../repository/MovieRepository/IMovie";
 
 export interface IMovieValidator {
-    validate(movie: Movie): Promise<boolean>;
+    validate(movie: IMovie): Promise<boolean>;
 }

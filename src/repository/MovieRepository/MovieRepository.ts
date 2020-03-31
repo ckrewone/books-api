@@ -23,14 +23,6 @@ export class MovieRepository implements IMovieRepository {
         return this.movieRepository.getById(id);
     }
 
-    public getOneByDuration(duration): Promise<Movie> {
-        return this.movieRepository.getOneByDuration(duration);
-    }
-
-    public getOneRandom(): Promise<Movie> {
-        return this.movieRepository.getOneRandom();
-    }
-
     public getPreferedGenres(): string[] {
         return this.movieRepository.getPreferedGenres();
     }

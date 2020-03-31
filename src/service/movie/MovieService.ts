@@ -1,11 +1,12 @@
-import { inject, injectable } from 'inversify';
+import {inject, injectable} from 'inversify';
 import * as union from 'lodash.union';
 import API_TYPES from '../../ApiTypes';
-import { Movie } from '../../model/Movie';
-import { IMovie } from '../../repository/MovieRepository/IMovie';
-import { IMovieRepository } from '../../repository/MovieRepository/IMovieRepository';
-import { IMovieDataAccessOperations } from '../dao/IMovieDataAccessOperations';
-import { IMovieService } from './IMovieService';
+import {Movie} from '../../model/Movie';
+import {IMovie} from '../../repository/MovieRepository/IMovie';
+import {IMovieRepository} from '../../repository/MovieRepository/IMovieRepository';
+import {IMovieDataAccessOperations} from '../dao/IMovieDataAccessOperations';
+import {IMovieService} from './IMovieService';
+import {NotFoundError} from "../../common/errors/NotFoundError";
 
 @injectable()
 export class MovieService implements IMovieService {
@@ -19,7 +20,7 @@ export class MovieService implements IMovieService {
         if (movie.id) {
             const repoMovie: Movie = await this.movieRepository.getById(movie.id);
             if (repoMovie) {
-                throw new Error(`Movie with id ${movie.id} arleady exist`);
+                throw new NotFoundError(`Movie with id ${movie.id} arleady exist`);
             }
         }
         const newMovie = new Movie(movie);
@@ -30,43 +31,21 @@ export class MovieService implements IMovieService {
     public async updateMovie(movie: IMovie): Promise<Movie> {
         const repoMovie: Movie = await this.movieRepository.getById(movie.id);
         if (!repoMovie) {
-            throw new Error('Updating movie failed. Movie not found');
+            throw new NotFoundError('Updating movie failed. Movie not found');
         }
-        if (movie.director) {
-            repoMovie.director = movie.director;
-        }
-        if (movie.actors) {
-            repoMovie.actors = movie.actors;
-        }
-        if (movie.genres) {
-            repoMovie.genres = movie.genres;
-        }
-        if (movie.plot) {
-            repoMovie.plot = movie.plot;
-        }
-        if (movie.posterUrl) {
-            repoMovie.posterUrl = movie.posterUrl;
-        }
-        if (movie.runtime) {
-            repoMovie.runtime = movie.runtime;
-        }
-        if (movie.title) {
-            repoMovie.title = movie.title;
-        }
-        if (movie.year) {
-            repoMovie.year = movie.year;
-        }
-        console.log('updated movie');
-        console.log(repoMovie);
-        await this.movieDao.update(repoMovie);
-        return repoMovie;
+        await this.movieDao.delete(repoMovie);
+        const newMovie = new Movie(movie)
+        await this.movieDao.add(newMovie);
+        return newMovie;
     }
 
     public async getMovies(id: number): Promise<Movie[]> {
         if (id) {
             const movie = await this.movieRepository.getById(id);
             if (movie) {
-                return [ await this.movieRepository.getById(id) ];
+                return [await this.movieRepository.getById(id)];
+            } else {
+                return [];
             }
         } else {
             return await this.movieRepository.getAll();
@@ -76,23 +55,29 @@ export class MovieService implements IMovieService {
     public async deleteMovie(id: number): Promise<boolean> {
         const repoMovie: Movie = await this.movieRepository.getById(id);
         if (!repoMovie) {
-            throw new Error('Updating movie failed. Movie not found');
+            throw new NotFoundError('Movie not found');
         }
         return await this.movieDao.delete(repoMovie);
     }
 
     public async getRandom(genres: string[], duration: number): Promise<Movie[]> {
-            if (genres && genres.length) {
-                const randomByGenres = await this.getRamdonByGenres(genres);
-                if (duration) {
-                    return await this.getFilteredByDuration(randomByGenres, duration);
-                }
-            }
+        if (genres) {
+            const randomByGenres = await this.getRamdonByGenres(genres);
             if (duration) {
-                const movie = await this.movieRepository.getOneByDuration(duration);
-                return [movie];
+                return await this.getFilteredByDuration(randomByGenres, duration);
             }
-            return [await this.movieRepository.getOneRandom()];
+            return randomByGenres;
+        }
+        const allMovies = await this.movieRepository.getAll();
+        if (duration) {
+            const moviesByDuration: Movie[] = allMovies.filter((movie) => movie.runtime > duration - 10 && movie.runtime < duration + 10)
+            if (moviesByDuration) {
+                return [moviesByDuration[this.getRandomIndex(moviesByDuration.length)]];
+            } else {
+                throw new NotFoundError('Movies not found for duration: ' + duration);
+            }
+        }
+        return [allMovies[this.getRandomIndex(allMovies.length)]];
     }
 
 
@@ -100,13 +85,17 @@ export class MovieService implements IMovieService {
         const repoMovies = await this.movieRepository.getAll();
         const scoredIndexes = {};
         repoMovies.forEach((movie, index) => {
-            const uniqeGenres = union(movie.genres, genres);
+            let uniqeGenres = union(movie.genres, genres).map((el: string) => el.toLowerCase());
+            uniqeGenres = [...new Set(uniqeGenres)];
             if (uniqeGenres.length < genres.length + movie.genres.length) {
-                scoredIndexes[index] = uniqeGenres.length - genres.length;
+                const extraPoint = movie.genres < genres ? 1 : 0;
+                scoredIndexes[index] = uniqeGenres.length - genres.length + extraPoint;
             }
         });
-        const result =  (Object.keys(scoredIndexes).reduce((prev, curr) => {
-            if (!prev[scoredIndexes[curr]]) { prev[scoredIndexes[curr]] = []; }
+        const result = (Object.keys(scoredIndexes).reduce((prev, curr) => {
+            if (!prev[scoredIndexes[curr]]) {
+                prev[scoredIndexes[curr]] = [];
+            }
             prev[scoredIndexes[curr]].push(repoMovies[curr]);
             return prev;
         }, []) as any);
@@ -120,6 +109,10 @@ export class MovieService implements IMovieService {
             }
             return prev;
         }, []);
+    }
+
+    private getRandomIndex(arrayLength: number): number {
+        return Math.floor(Math.random() * 100) % arrayLength;
     }
 
 }

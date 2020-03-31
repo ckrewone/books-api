@@ -25,23 +25,8 @@ export class JsonMovieRepository implements IMovieRepository {
         return this.movies;
     }
 
-    public async getOneByDuration(duration: number): Promise<Movie> {
-        await this.syncData();
-        const moviesByDuration: Movie[] = this.movies.filter((movi) => movi.runtime > duration - 10 && movi.runtime < duration + 10);
-        return moviesByDuration[this.getRandomIndex(moviesByDuration.length)];
-    }
-
-    public async getOneRandom(): Promise<Movie> {
-        await this.syncData();
-        return this.movies[this.getRandomIndex(this.movies.length)];
-    }
-
     public getPreferedGenres(): string[] {
         return this.genres;
-    }
-
-    private getRandomIndex(arrayLength: number): number {
-        return Math.floor(Math.random() * 100) % arrayLength;
     }
 
     private async syncData() {

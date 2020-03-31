@@ -36,6 +36,8 @@
   "devDependencies": {
     "@types/jest": "^23.3.12",
     "jest": "^23.6.0",
-    "supertest": "^3.3.0"
+    "supertest": "^3.3.0",
+    "node-mocks-http": "^1.8.1",
+    "mock-fs": "^4.11.0"
   }
 }

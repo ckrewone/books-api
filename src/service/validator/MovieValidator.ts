@@ -2,7 +2,7 @@ import {inject, injectable} from "inversify";
 import * as union from 'lodash.union';
 import * as yup from "yup";
 import API_TYPES from "../../ApiTypes";
-import {Movie} from "../../model/Movie";
+import {IMovie} from "../../repository/MovieRepository/IMovie";
 import {IMovieRepository} from "../../repository/MovieRepository/IMovieRepository";
 import {IMovieValidator} from "./IMovieValidator";
 
@@ -25,7 +25,7 @@ export class MovieValidator implements IMovieValidator {
     ) {
     }
 
-    public async validate(movie: Movie): Promise<boolean> {
+    public async validate(movie: IMovie): Promise<boolean> {
         this.movieSchema.validateSync({
             id: movie.id,
             title: movie.title,
@@ -37,15 +37,15 @@ export class MovieValidator implements IMovieValidator {
             posterUrl: movie.posterUrl,
             genres: movie.genres,
         });
-        await this.validateGenres(movie.genres);
+        await this.validateByGenres(movie.genres);
         return true;
     }
 
-    private async validateGenres(genres): Promise<boolean> {
+    private async validateByGenres(genres): Promise<boolean> {
         const allGenres = await this.movieRepository.getPreferedGenres().map((el) => el.toLowerCase());
         const lowerGenres = genres.map((el) => el.toLowerCase());
         if (union(allGenres, lowerGenres).length !== allGenres.length) {
-            throw new Error('Invalid genres');
+            return Promise.reject({errors: ['Invalid genres']});
         }
         return true;
     }

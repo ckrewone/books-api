@@ -4,7 +4,6 @@ import API_TYPES from "../../../ApiTypes";
 import {AppConfig} from "../../../config/AppConfig";
 import {Movie} from "../../../model/Movie";
 import {IMovieRepository} from "../../../repository/MovieRepository/IMovieRepository";
-import {IMovieValidator} from "../../validator/IMovieValidator";
 import { IMovieDataAccessOperations } from '../IMovieDataAccessOperations';
 
 @injectable()
@@ -12,7 +11,6 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
     constructor(
         @inject(API_TYPES.AppConfig) private appConfig: AppConfig,
         @inject(API_TYPES.MovieRepository) private movieRepository: IMovieRepository,
-        @inject(API_TYPES.MovieValidator) private movieValidator: IMovieValidator,
     ) {
     }
 
@@ -25,18 +23,8 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
     }
 
     public async add(data: Movie): Promise<boolean> {
-        await this.movieValidator.validate(data);
         const allMovies = await this.movieRepository.getAll();
         allMovies.push(data);
-        return await this.saveMovies(allMovies);
-    }
-
-    public async update(data: Movie): Promise<boolean> {
-        await this.movieValidator.validate(data);
-        const allMovies = await this.movieRepository.getAll();
-        const index = allMovies.findIndex((m) => m.id == data.id);
-        if (index === -1 ) { throw new Error('Updating data failed. Movie not found'); }
-        allMovies[index] = data;
         return await this.saveMovies(allMovies);
     }
 
@@ -61,8 +49,8 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
             }
             return false;
         } catch (e) {
-            console.log('error creating movie');
-            console.log(e);
+            throw new Error('Unable to save changes');
+            console.log('Unabe to save changes. Error: ', e);
         }
         }
 
