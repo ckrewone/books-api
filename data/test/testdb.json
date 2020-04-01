@@ -1,83 +1,122 @@
 {
-  "genres": [
-    "Comedy",
-    "Fantasy",
-    "Crimes",
-    "Drama",
-    "Music",
-    "Adventure",
-    "History",
-    "Thriller",
-    "Animation",
-    "Family",
-    "Mystery",
-    "Biography",
-    "Action",
-    "Film-Noir",
-    "Romance",
-    "Sci-Fi",
-    "War",
-    "Western",
-    "Horror",
-    "Musical",
-    "Sport"
-  ],
-  "movies": [
-    {
-      "id": 1,
-      "title": "Beetlejuice",
-      "year": "1988",
-      "runtime": 103,
-      "director": "Tim Burton",
-      "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
-      "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
-      "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
-      "genres": [
+    "genres": [
         "Comedy",
-        "Fantasy"
-      ]
-    },
-    {
-      "id": 3,
-      "title": "Beetlejuice",
-      "year": "1988",
-      "runtime": 150,
-      "director": "Tim Burton",
-      "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
-      "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
-      "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
-      "genres": [
-        "Comedy",
-        "Fantasy"
-      ]
-    },
-    {
-      "id": 4,
-      "title": "Beetlejuice",
-      "year": "1988",
-      "runtime": 150,
-      "director": "Tim Burton",
-      "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
-      "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
-      "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
-      "genres": [
-        "Comedy",
-        "War"
-      ]
-    },
-    {
-      "id": 5,
-      "title": "Beetlejuice",
-      "year": "1988",
-      "runtime": 150,
-      "director": "Tim Burton",
-      "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
-      "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
-      "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
-      "genres": [
+        "Fantasy",
+        "Crimes",
+        "Drama",
+        "Music",
+        "Adventure",
+        "History",
+        "Thriller",
+        "Animation",
+        "Family",
+        "Mystery",
+        "Biography",
         "Action",
-        "Fantasy"
-      ]
-    }
-  ]
+        "Film-Noir",
+        "Romance",
+        "Sci-Fi",
+        "War",
+        "Western",
+        "Horror",
+        "Musical",
+        "Sport"
+    ],
+    "movies": [
+        {
+            "id": 1,
+            "title": "Beetlejuice",
+            "year": "1988",
+            "runtime": 103,
+            "director": "Tim Burton",
+            "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
+            "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
+            "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
+            "genres": [
+                "Comedy",
+                "Fantasy"
+            ]
+        },
+        {
+            "id": 3,
+            "title": "Beetlejuice",
+            "year": "1988",
+            "runtime": 150,
+            "director": "Tim Burton",
+            "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
+            "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
+            "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
+            "genres": [
+                "Comedy",
+                "Fantasy"
+            ]
+        },
+        {
+            "id": 4,
+            "title": "Beetlejuice",
+            "year": "1988",
+            "runtime": 150,
+            "director": "Tim Burton",
+            "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
+            "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
+            "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
+            "genres": [
+                "Comedy",
+                "War"
+            ]
+        },
+        {
+            "id": 5,
+            "title": "Beetlejuice",
+            "year": "1988",
+            "runtime": 150,
+            "director": "Tim Burton",
+            "actors": "Alec Baldwin, Geena Davis, Annie McEnroe, Maurice Page",
+            "plot": "A couple of recently deceased ghosts contract the services of a \"bio-exorcist\" in order to remove the obnoxious new owners of their house.",
+            "posterUrl": "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUwODE3MDE0MV5BMl5BanBnXkFtZTgwNTk1MjI4MzE@._V1_SX300.jpg",
+            "genres": [
+                "Action",
+                "Fantasy"
+            ]
+        },
+        {
+            "id": 12345,
+            "title": "title",
+            "year": 2020,
+            "runtime": 120,
+            "director": "Tester Test",
+            "actors": "",
+            "plot": "",
+            "posterUrl": "",
+            "genres": [
+                "Action"
+            ]
+        },
+        {
+            "id": 10000,
+            "title": "title",
+            "year": 2020,
+            "runtime": 120,
+            "director": "Tester Test",
+            "actors": "",
+            "plot": "",
+            "posterUrl": "",
+            "genres": [
+                "Action"
+            ]
+        },
+        {
+            "id": 10000,
+            "title": "title",
+            "year": 2020,
+            "runtime": 120,
+            "director": "Tester Test",
+            "actors": "",
+            "plot": "",
+            "posterUrl": "",
+            "genres": [
+                "Action"
+            ]
+        }
+    ]
 }

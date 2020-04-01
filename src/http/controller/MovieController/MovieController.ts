@@ -16,22 +16,6 @@ export class MovieController extends AbstractController implements IMovieControl
     ) {
         super(movieValidator);
     }
-
-    public async delete(req: Request, res: Response) {
-        if (!(req.body.id && typeof req.body.id === 'number')) {
-            this.sendErrorResponse(res, 'Invalid id type. Required number', 400);
-        }
-        try {
-            await this.movieService.deleteMovie(req.body.id);
-            this.sendSuccessResponse(res, {success: true});
-        } catch (e) {
-            console.log('Deleting movie failed. Error: ' + e.message);
-            const code = e.constructor === NotFoundError ? 400 : 500;
-            const message = code === 400 ? e.message : 'Something goes wrong';
-            this.sendErrorResponse(res, message, code);
-        }
-    }
-
     public async getRandom(req: Request, res: Response) {
         if (req.body?.genres && ( !Array.isArray(req.body.genres) || typeof req.body.genres[0] !== 'string' )) {
             this.sendErrorResponse(res, 'Invalid geners type. Required array of string', 400);
@@ -52,19 +36,6 @@ export class MovieController extends AbstractController implements IMovieControl
         }
     }
 
-    public async update(req: Request, res: Response) {
-        if (!await this.movieValidate(res, req.body)) { return; }
-        try {
-            const movie = await this.movieService.updateMovie(req.body);
-            this.sendSuccessResponse(res, movie);
-        } catch (e) {
-            console.log('Update movie failed. Error: ' + e.message);
-            const code = e.constructor === NotFoundError ? 400 : 500;
-            const message = code === 400 ? e.message : 'Something goes wrong';
-            this.sendErrorResponse(res, message, code);
-        }
-    }
-
     public async create(req: Request, res: Response) {
         if (!await this.movieValidate(res, req.body)) { return; }
         try {
@@ -75,16 +46,6 @@ export class MovieController extends AbstractController implements IMovieControl
             const code = e.constructor === NotFoundError ? 400 : 500;
             const message = code === 400 ? e.message : 'Something goes wrong';
             this.sendErrorResponse(res, message, code);
-        }
-    }
-
-    public async get(req: Request, res: Response) {
-        const movies: Movie[] = await this.movieService.getMovies(req.query.id);
-        if (movies && movies.length) {
-            this.sendSuccessResponse(res, movies);
-        } else {
-            console.log(`Movie with id: ${req.query.id} not found`);
-            this.sendErrorResponse(res, 'Movie/s not found', 400);
         }
     }
 }

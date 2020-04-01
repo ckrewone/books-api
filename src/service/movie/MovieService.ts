@@ -28,38 +28,6 @@ export class MovieService implements IMovieService {
         return newMovie.id;
     }
 
-    public async updateMovie(movie: IMovie): Promise<Movie> {
-        const repoMovie: Movie = await this.movieRepository.getById(movie.id);
-        if (!repoMovie) {
-            throw new NotFoundError('Movie not found');
-        }
-        await this.movieDao.delete(repoMovie);
-        const newMovie = new Movie(movie);
-        await this.movieDao.add(newMovie);
-        return newMovie;
-    }
-
-    public async getMovies(id: number): Promise<Movie[]> {
-        if (id) {
-            const movie = await this.movieRepository.getById(id);
-            if (movie) {
-                return [await this.movieRepository.getById(id)];
-            } else {
-                return [];
-            }
-        } else {
-            return await this.movieRepository.getAll();
-        }
-    }
-
-    public async deleteMovie(id: number): Promise<boolean> {
-        const repoMovie: Movie = await this.movieRepository.getById(id);
-        if (!repoMovie) {
-            throw new NotFoundError('Movie not found');
-        }
-        return await this.movieDao.delete(repoMovie);
-    }
-
     public async getRandom(genres: string[], duration: number): Promise<Movie[]> {
         if (genres) {
             const randomByGenres = await this.getRamdonByGenres(genres);

@@ -14,14 +14,6 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
     ) {
     }
 
-    public async delete(data: Movie): Promise<boolean> {
-        const allMovies = await this.movieRepository.getAll();
-        const index = allMovies.findIndex((m) => m.id == data.id);
-        if (index === -1 ) { throw new Error('Deleting data failed. Movie not found'); }
-        allMovies.splice(index, 1);
-        return await this.saveMovies(allMovies);
-    }
-
     public async add(data: Movie): Promise<boolean> {
         const allMovies = await this.movieRepository.getAll();
         allMovies.push(data);

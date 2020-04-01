@@ -14,10 +14,6 @@ export class MovieDao implements IMovieDataAccessOperations {
     ) {
     }
 
-    public delete(data: Movie): Promise<boolean> {
-        return this.movieDaoFactory(this.appConfig.dbSettings.type).delete(data);
-    }
-
     public async add(data: Movie): Promise<boolean> {
         return this.movieDaoFactory(this.appConfig.dbSettings.type).add(data);
     }

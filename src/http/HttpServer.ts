@@ -33,11 +33,8 @@ export class HttpServer {
 
     private regiterRoutes() {
         const router = express.Router();
-        router.get('/movie', this.controllerHandler.getMethod(this.movieController, 'get'));
         router.post('/movie', this.controllerHandler.getMethod(this.movieController, 'create'));
         router.post('/movie/random', this.controllerHandler.getMethod(this.movieController, 'getRandom'));
-        router.delete('/movie', this.controllerHandler.getMethod(this.movieController, 'delete'));
-        router.patch('/movie', this.controllerHandler.getMethod(this.movieController, 'update'));
 
         return router;
     }

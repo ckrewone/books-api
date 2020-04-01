@@ -17,33 +17,6 @@ describe('MovieController', () => {
         controller = new MovieController(movieService, movieValidator);
 
     });
-    describe('get', () => {
-        it('should get movie with valid id', async () => {
-            const id = 1;
-            const req = httpMocks.createRequest({
-                query: {
-                    id,
-                },
-            });
-            const res = httpMocks.createResponse();
-
-            movieService.getMovies = async () => ([{ id } as any]);
-
-            await controller.get(req, res);
-            expect(res.statusCode).toBe(200);
-            expect(res._getData()[0].id).toBe(id);
-        });
-
-        it('should return error if movies not found', async () => {
-            const req = httpMocks.createRequest();
-            const res = httpMocks.createResponse();
-
-            movieService.getMovies = async () => undefined;
-
-            await controller.get(req, res);
-            expect(res.statusCode).toBe(400);
-        });
-    });
 
     describe('create', () => {
         it('should create a movie', async () => {
@@ -66,58 +39,6 @@ describe('MovieController', () => {
             movieValidator.validate = async () => true;
 
             await controller.create(req, res);
-            expect(res.statusCode).toBe(500);
-            expect(res._getData().message).toBe('Something goes wrong');
-        });
-    });
-
-    describe('update', () => {
-        it('should update a movie', async () => {
-            const req = httpMocks.createRequest({ body: {}});
-            const res = httpMocks.createResponse();
-
-            movieService.updateMovie = async () => undefined;
-            movieValidator.validate = async () => true;
-
-            await controller.update(req, res);
-            expect(res.statusCode).toBe(200);
-            expect(res._getData()).toBeDefined();
-        });
-
-        it('should return error response if service throw Error', async () => {
-            const req = httpMocks.createRequest({ body: {}});
-            const res = httpMocks.createResponse();
-
-            movieService.updateMovie = async () => { throw new Error(); };
-            movieValidator.validate = async () => true;
-
-            await controller.update(req, res);
-            expect(res.statusCode).toBe(500);
-            expect(res._getData().message).toBe('Something goes wrong');
-        });
-    });
-
-    describe('delete', () => {
-        it('should delete a movie', async () => {
-            const req = httpMocks.createRequest({ body: {}});
-            const res = httpMocks.createResponse();
-
-            movieService.deleteMovie = async () => undefined;
-            movieValidator.validate = async () => true;
-
-            await controller.delete(req, res);
-            expect(res.statusCode).toBe(200);
-            expect(res._getData().success).toBeTruthy();
-        });
-
-        it('should return error response if service throw Error', async () => {
-            const req = httpMocks.createRequest({ body: {}});
-            const res = httpMocks.createResponse();
-
-            movieService.deleteMovie = async () => { throw new Error(); };
-            movieValidator.validate = async () => true;
-
-            await controller.delete(req, res);
             expect(res.statusCode).toBe(500);
             expect(res._getData().message).toBe('Something goes wrong');
         });
