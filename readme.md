@@ -37,15 +37,15 @@ It returns all movies if `id` is not defined, otherwise return specified movie.
     ```json
     [ 
       { 
-          id: 2,
-          title: 'title',
-          year: 1911,
-          runtime: 57,
-          director: 'Tester Test',
-          actors: '',
-          plot: '',
-          posterUrl: '',
-          genres: [ 'Action' ] 
+          "id": 2,
+          "title": "title",
+          "year": 1911,
+          "runtime": 57,
+          "director": "Tester Test",
+          "actors": "Jonh Rambo",
+          "plot": "test",
+          "posterUrl": "test.com/poster",
+          "genres": [ "Action" ] 
       } 
     ]
     ``` 
@@ -107,9 +107,9 @@ It return rondom movie/s. You can specify optional search parameters: `duration`
           "year": 1911,
           "runtime": 116,
           "director": "Tester Test",
-          "actors": "",
-          "plot": "",
-          "posterUrl": "",
+          "actors": "John Rambo",
+          "plot": "test",
+          "posterUrl": "test.com/poster",
           "genres": [ "Action", "Comedy" ] 
       },
       { 
@@ -118,9 +118,9 @@ It return rondom movie/s. You can specify optional search parameters: `duration`
           "year": 2012,
           "runtime": 121,
           "director": "Tester Test Jr",
-          "actors": "",
-          "plot": "",
-          "posterUrl": "",
+          "actors": "John Smith",
+          "plot": "test",
+          "posterUrl": "test.com/poster2",
           "genres": [ "Sci-Fi", "Comedy" ] 
       }
      
