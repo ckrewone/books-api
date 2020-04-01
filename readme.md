@@ -1,3 +1,9 @@
+**Info**
+----
+Movie API allow you to add new movie and get random movie.
+
+You can find extended version (CRUD) on branch `dev`
+
 **How to run:**
 ----
 1. `yarn install` 
