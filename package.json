@@ -5,8 +5,9 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "node lib/index.js",
-    "start:test": "node lib/ --testing",
-    "test": "jest"
+    "start:testing": "node lib/ --testing",
+    "test:unit": "jest __tests__/Unit",
+    "test:api": "jest __tests__/API"
   },
   "author": "Michał Żakowski",
   "license": "ISC",

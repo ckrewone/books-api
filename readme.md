@@ -1,3 +1,19 @@
+**How to run:**
+----
+1. `yarn install` 
+2. `yarn build`
+3. `yarn start`
+
+### How run tests:
+1. Unit: 
+- `yarn test:unit`
+
+2. API:
+- `yarn start:testing`
+- open new terminal
+- `yarn test:api`
+
+
 **Movie API**
 ----
 
