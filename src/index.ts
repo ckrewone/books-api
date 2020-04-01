@@ -16,8 +16,6 @@ if (args.testing) {
     APP_CONFIG_FILE = './app-config.json';
 }
 
-console.log(APP_CONFIG_FILE);
-
 const container = new Container();
 const configProvider = new JsonConfigProvider(APP_CONFIG_FILE);
 

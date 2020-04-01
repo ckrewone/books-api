@@ -1,10 +1,10 @@
 import 'jest';
-import 'reflect-metadata';
 import * as httpMocks from 'node-mocks-http';
-import {MovieController} from "../../../../src/http/controller/MovieController/MovieController";
-import {IMovieValidator} from "../../../../src/service/validator/IMovieValidator";
-import {IMovieService} from "../../../../src/service/movie/IMovieService";
+import 'reflect-metadata';
 import {IMovieController} from "../../../../src/http/controller/MovieController/IMovieController";
+import {MovieController} from "../../../../src/http/controller/MovieController/MovieController";
+import {IMovieService} from "../../../../src/service/movie/IMovieService";
+import {IMovieValidator} from "../../../../src/service/validator/IMovieValidator";
 
 describe('MovieController', () => {
     let movieValidator: IMovieValidator;
@@ -62,13 +62,12 @@ describe('MovieController', () => {
             const req = httpMocks.createRequest({ body: {}});
             const res = httpMocks.createResponse();
 
-            const error = new Error('Test message');
-            movieService.createMovie = async () => { throw error; }
+            movieService.createMovie = async () => { throw new Error(); };
             movieValidator.validate = async () => true;
 
             await controller.create(req, res);
             expect(res.statusCode).toBe(500);
-            expect(res._getData().message).toBe(error.message);
+            expect(res._getData().message).toBe('Something goes wrong');
         });
     });
 
@@ -89,13 +88,12 @@ describe('MovieController', () => {
             const req = httpMocks.createRequest({ body: {}});
             const res = httpMocks.createResponse();
 
-            const error = new Error('Test message');
-            movieService.updateMovie = async () => { throw error; }
+            movieService.updateMovie = async () => { throw new Error(); };
             movieValidator.validate = async () => true;
 
             await controller.update(req, res);
             expect(res.statusCode).toBe(500);
-            expect(res._getData().message).toBe(error.message);
+            expect(res._getData().message).toBe('Something goes wrong');
         });
     });
 
@@ -116,13 +114,12 @@ describe('MovieController', () => {
             const req = httpMocks.createRequest({ body: {}});
             const res = httpMocks.createResponse();
 
-            const error = new Error('Test message');
-            movieService.deleteMovie = async () => { throw error; }
+            movieService.deleteMovie = async () => { throw new Error(); };
             movieValidator.validate = async () => true;
 
             await controller.delete(req, res);
             expect(res.statusCode).toBe(500);
-            expect(res._getData().message).toBe(error.message);
+            expect(res._getData().message).toBe('Something goes wrong');
         });
     });
 
@@ -172,13 +169,12 @@ describe('MovieController', () => {
             const req = httpMocks.createRequest({ body: {}});
             const res = httpMocks.createResponse();
 
-            const error = new Error('test');
-            movieService.getRandom = async () => { throw error; }
+            movieService.getRandom = async () => { throw new Error(); };
             movieValidator.validate = async () => true;
 
             await controller.getRandom(req, res);
             expect(res.statusCode).toBe(500);
-            expect(res._getData().message).toBe(error.message);
+            expect(res._getData().message).toBe('Something goes wrong');
         });
     });
 });

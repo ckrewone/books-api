@@ -17,7 +17,7 @@ export class AbstractController {
         res.status(code).send({ message });
     }
 
-    public async movieValidate(res: Response, movie: IMovie) : Promise<boolean> {
+    public async movieValidate(res: Response, movie: IMovie): Promise<boolean> {
         try {
             await this.movieValidator.validate(movie);
             return true;

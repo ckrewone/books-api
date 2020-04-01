@@ -5,3 +5,4 @@ node_modules
 app-config.json
 yarn-error.log
 coverage
+data/test/testdb.json

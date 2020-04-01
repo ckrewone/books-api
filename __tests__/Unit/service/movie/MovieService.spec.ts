@@ -1,11 +1,11 @@
 import 'jest';
 import 'reflect-metadata';
 import {Movie} from "../../../../src/model/Movie";
+import {IMovie} from "../../../../src/repository/MovieRepository/IMovie";
 import {IMovieRepository} from "../../../../src/repository/MovieRepository/IMovieRepository";
-import {MovieService} from "../../../../src/service/movie/MovieService";
 import {IMovieDataAccessOperations} from "../../../../src/service/dao/IMovieDataAccessOperations";
 import {IMovieService} from "../../../../src/service/movie/IMovieService";
-import {IMovie} from "../../../../src/repository/MovieRepository/IMovie";
+import {MovieService} from "../../../../src/service/movie/MovieService";
 
 
 describe('MovieService', () => {

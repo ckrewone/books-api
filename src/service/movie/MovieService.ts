@@ -1,12 +1,12 @@
 import {inject, injectable} from 'inversify';
 import * as union from 'lodash.union';
 import API_TYPES from '../../ApiTypes';
+import {NotFoundError} from "../../common/errors/NotFoundError";
 import {Movie} from '../../model/Movie';
 import {IMovie} from '../../repository/MovieRepository/IMovie';
 import {IMovieRepository} from '../../repository/MovieRepository/IMovieRepository';
 import {IMovieDataAccessOperations} from '../dao/IMovieDataAccessOperations';
 import {IMovieService} from './IMovieService';
-import {NotFoundError} from "../../common/errors/NotFoundError";
 
 @injectable()
 export class MovieService implements IMovieService {
@@ -31,10 +31,10 @@ export class MovieService implements IMovieService {
     public async updateMovie(movie: IMovie): Promise<Movie> {
         const repoMovie: Movie = await this.movieRepository.getById(movie.id);
         if (!repoMovie) {
-            throw new NotFoundError('Updating movie failed. Movie not found');
+            throw new NotFoundError('Movie not found');
         }
         await this.movieDao.delete(repoMovie);
-        const newMovie = new Movie(movie)
+        const newMovie = new Movie(movie);
         await this.movieDao.add(newMovie);
         return newMovie;
     }
@@ -70,11 +70,11 @@ export class MovieService implements IMovieService {
         }
         const allMovies = await this.movieRepository.getAll();
         if (duration) {
-            const moviesByDuration: Movie[] = allMovies.filter((movie) => movie.runtime > duration - 10 && movie.runtime < duration + 10)
+            const moviesByDuration: Movie[] = allMovies.filter((movie) => movie.runtime > duration - 10 && movie.runtime < duration + 10);
             if (moviesByDuration) {
                 return [moviesByDuration[this.getRandomIndex(moviesByDuration.length)]];
             } else {
-                throw new NotFoundError('Movies not found for duration: ' + duration);
+                return [];
             }
         }
         return [allMovies[this.getRandomIndex(allMovies.length)]];

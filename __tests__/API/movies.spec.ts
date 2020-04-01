@@ -18,7 +18,7 @@ describe('movies', () => {
                 });
         });
 
-        it('should not get /movie by invalid id and return 404', (done) => {
+        it('should not get /movie by invalid id and return 400', (done) => {
             request(API_ULR).get('/movie?id=invalid')
                 .set('Accept', 'application/json')
                 .set('Content-type', 'application/json')
@@ -162,7 +162,6 @@ describe('movies', () => {
                     if (err) {
                         return done(err);
                     }
-                    console.log(res.body);
                     expect(res.status).toBe(200);
                     expect(res.body.movies.length).toBe(1);
                     expect(res.body.movies[0].runtime > duration - 10 && res.body.movies[0].runtime < duration + 10).toBeTruthy();

@@ -1,12 +1,12 @@
 import {Request, Response} from 'express';
 import {inject, injectable} from 'inversify';
 import API_TYPES from '../../../ApiTypes';
+import {NotFoundError} from "../../../common/errors/NotFoundError";
 import {Movie} from '../../../model/Movie';
 import {IMovieService} from '../../../service/movie/IMovieService';
 import {IMovieValidator} from "../../../service/validator/IMovieValidator";
 import {AbstractController} from '../AbstractController';
 import {IMovieController} from './IMovieController';
-import {NotFoundError} from "../../../common/errors/NotFoundError";
 
 @injectable()
 export class MovieController extends AbstractController implements IMovieController {
@@ -19,7 +19,7 @@ export class MovieController extends AbstractController implements IMovieControl
 
     public async delete(req: Request, res: Response) {
         if (!(req.body.id && typeof req.body.id === 'number')) {
-            this.sendErrorResponse(res, 'Invalid id', 400);
+            this.sendErrorResponse(res, 'Invalid id type. Required number', 400);
         }
         try {
             await this.movieService.deleteMovie(req.body.id);
@@ -27,7 +27,8 @@ export class MovieController extends AbstractController implements IMovieControl
         } catch (e) {
             console.log('Deleting movie failed. Error: ' + e.message);
             const code = e.constructor === NotFoundError ? 400 : 500;
-            this.sendErrorResponse(res, e.message, code);
+            const message = code === 400 ? e.message : 'Something goes wrong';
+            this.sendErrorResponse(res, message, code);
         }
     }
 
@@ -46,7 +47,8 @@ export class MovieController extends AbstractController implements IMovieControl
         } catch (e) {
             console.log('Unable to get random movie/s. Error: ' + e.message);
             const code = e.constructor === NotFoundError ? 400 : 500;
-            this.sendErrorResponse(res, e.message, code);
+            const message = code === 400 ? e.message : 'Something goes wrong';
+            this.sendErrorResponse(res, message, code);
         }
     }
 
@@ -58,7 +60,8 @@ export class MovieController extends AbstractController implements IMovieControl
         } catch (e) {
             console.log('Update movie failed. Error: ' + e.message);
             const code = e.constructor === NotFoundError ? 400 : 500;
-            this.sendErrorResponse(res, e.message, code);
+            const message = code === 400 ? e.message : 'Something goes wrong';
+            this.sendErrorResponse(res, message, code);
         }
     }
 
@@ -70,7 +73,8 @@ export class MovieController extends AbstractController implements IMovieControl
         } catch (e) {
             console.log('Create movie failed. Error: ' + e.message);
             const code = e.constructor === NotFoundError ? 400 : 500;
-            this.sendErrorResponse(res, e.message, code);
+            const message = code === 400 ? e.message : 'Something goes wrong';
+            this.sendErrorResponse(res, message, code);
         }
     }
 

@@ -1,47 +1,395 @@
-## The Software House - Node.js Developer recruitment task
+**Movie API**
+----
 
-Hey there!
+#### Get movie/s:
+It returns all movies if `id` is not defined, otherwise return specified movie.
 
-Not so long ago we decided create a catalogue of our favourite movies (data/db.json) as json. It is hard to update, so we would like to build an API
-for it, however we don't need a database, we still need it as a file.
+* **URL** `/movie`
 
-### TODOS
+* **Method:** `GET` 
+  
+*  **Query params:**
 
-1. We need to be able to add a new movie. Each movie should contain information about:
+   **Optional:**
+ 
+   `id=[integer]`
 
-- a list of genres (only predefined ones from db file) (required, array of predefined strings)
-- title (required, string, max 255 characters)
-- year (required, number)
-- runtime (required, number)
-- director (required, string, max 255 characters)
-- actors (optional, string)
-- plot (optional, string)
-- posterUrl (optional, string)
+* **Success Response:**
 
-Each field should be properly validated and meaningful error message should be return in case of invalid value.
+  * **Code:** 200 <br />
+    **Content:** 
+    ```json
+    [ 
+      { 
+          id: 2,
+          title: 'title',
+          year: 1911,
+          runtime: 57,
+          director: 'Tester Test',
+          actors: '',
+          plot: '',
+          posterUrl: '',
+          genres: [ 'Action' ] 
+      } 
+    ]
+    ``` 
+* **Error Response:**
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: 'Movie/s not found' }`
 
-2. We also need an endpoint to return a random matching movie for us. What we want to do is to send a list of genres (this parameter is optional) and a duration of a movie we are looking for.
+  OR
 
-The special algorythm should first find all the movies that have all genres of our choice and runtime between <duration - 10> and <duration + 10>. Then it should repeat this algorytm for each genres combination. For example:
+  * **Code:** 500 SERVER ERROR <br />
+    **Content:** `{ message : "Something goes wrong" }`
 
-If we send a request with genres [Comedy, Fantasy, Crime] then the top hits should be movies that have all three of them, then there should be movies that have one of [Comedy, Fantasy][comedy, criem], [Fantasy, Crime] and then those with Comedy only, Fantasy only and Crime only.
+* **Sample Call:**
 
-Of course we dont want to have duplicates.
+    ```javascript
+      $.ajax({
+        url: "/movie?id=1",
+        dataType: "json",
+        type : "GET",
+        success : function(r) {
+          console.log(r);
+        }
+      });
+    ```
+----
 
-If we dont provide genres parameter then we get a single random movie with a runtime between <duration - 10> and <duration + 10>.
+#### Get random movie/s:
+It return rondom movie/s. You can specify optional search parameters: `duration`, `genres`. 
 
-If we dont provide duration parameter then we should get all of the movie with specific genres.
+* **URL** `/movie/random`
 
-If we dont provide any parameter, then we should get a single random movie.
+* **Method:** `POST` 
+  
+*  **Data params:**
 
-### Rules
+   **Optional:**
+ 
+   `duration=[integer]`
+   
+   `duration=[array of string]`
+   
+   **Sample body:**
+   ```json
+   { 
+      "duration": 120,
+      "genres": ["Action", "Comedy"]
+   }  
+   ```
+   
+* **Success Response:**
 
-**Use express.js**
+  * **Code:** 200 <br />
+    **Content:** 
+    ```json
+    [ 
+      { 
+          "id": 2,
+          "title": "Title",
+          "year": 1911,
+          "runtime": 116,
+          "director": "Tester Test",
+          "actors": "",
+          "plot": "",
+          "posterUrl": "",
+          "genres": [ "Action", "Comedy" ] 
+      },
+      { 
+          "id": 3,
+          "title": "Title 2",
+          "year": 2012,
+          "runtime": 121,
+          "director": "Tester Test Jr",
+          "actors": "",
+          "plot": "",
+          "posterUrl": "",
+          "genres": [ "Sci-Fi", "Comedy" ] 
+      }
+     
+    ]
+    ``` 
+* **Error Response:**
 
-**Keep code clean**
+  * **Code:** 400 BAD REQUEST <br />
+    **Content:** `{ message: 'Invalid duration type. Required number' }`
 
-**The algorytm should be unit tested**
+  OR
+  
+    * **Code:** 400 BAD REQUEST <br />
+      **Content:** `{ message: 'Invalid geners type. Required array of string' }`
+  
+    OR
 
-**Remember about proper error handling**
+  * **Code:** 500 SERVER ERROR <br />
+    **Content:** `{ message : "Something goes wrong" }`
 
-**We require code in git repository**
+* **Sample Call:**
+
+    ```javascript
+      $.ajax({
+        url: "/movie/random",
+        dataType: "json",
+        type : "POST",
+        data: JSON.stringify({
+          genres: ["Action", "horror"],
+        }),
+        success : function(r) {
+          console.log(r);
+        }
+      });
+    ```
+  
+ ----
+ 
+#### Add movie:
+Request add new movie.
+ 
+ * **URL** `/movie`
+ 
+ * **Method:** `POST` 
+   
+ *  **Data params:**
+ 
+    **Required:**
+ 
+       `title=[string], (max 255 characters)`
+       
+       `year=[integer]`
+       
+       `runtime=[integer]`
+       
+       `director=[string], (max 255 characters)`
+       
+       `genres=[array of string], (min 1)`
+       
+    **Optional:**
+    
+       `actors=[string]`
+       
+       `id=[number]` // auto generated
+       
+       `plot=[string]`
+       
+       `posterUrl=[string]`
+       
+    **Sample body:**
+    ```json
+    { 
+       "title" : "Awesome Movie 3",
+       "runtime": 86,
+       "year": 1986,
+       "genres": ["Comedy"],
+       "director": "Jan Kowalsky",
+       "posterUrl": "https://poster.com/awesome_movie_3"
+    }  
+    ```
+    
+ * **Success Response:**
+ 
+   * **Code:** 200 <br />
+     **Content:** 
+     ```json
+     {
+       "id" : 123
+     }
+     ``` 
+ * **Error Response:**
+ 
+   * **Code:** 400 BAD REQUEST <br />
+     **Content:** `{ message: '<validation message>' }`
+ 
+   OR
+   
+     * **Code:** 400 BAD REQUEST <br />
+       **Content:** `{ message: 'Movie with id 123 arleady exist' }`
+   
+     OR
+ 
+   * **Code:** 500 SERVER ERROR <br />
+     **Content:** `{ message : "Something goes wrong" }`
+ 
+ * **Sample Call:**
+ 
+     ```javascript
+       $.ajax({
+         url: "/movie",
+         dataType: "json",
+         type : "POST",
+         data: JSON.stringify(
+               { 
+                  "title" : "Awesome Movie 3",
+                  "runtime": 86,
+                  "year": 1986,
+                  "genres": ["Comedy"],
+                  "director": "Jan Kowalsky",
+                  "posterUrl": "https://poster.com/awesome_movie_3"
+               }     
+         ),
+         success : function(r) {
+           console.log(r);
+         }
+       });
+     ```
+   
+  ----
+
+ #### Delete movie:
+Request delete a movie.
+   
+ * **URL** `/movie`
+
+ * **Method:** `DELETE` 
+   
+ *  **Data params:**
+ 
+    **Required:**
+ 
+       `id=[number]`
+       
+    **Sample body:**
+    ```json
+    { 
+       "id" : "3"
+    }  
+    ```
+    
+ * **Success Response:**
+ 
+   * **Code:** 200 <br />
+     **Content:** 
+     ```json
+     {
+       "success" : true
+     }
+     ``` 
+ * **Error Response:**
+ 
+   * **Code:** 400 BAD REQUEST <br />
+     **Content:** `{ message: '<validation message>' }`
+ 
+   OR
+   
+     * **Code:** 400 BAD REQUEST <br />
+       **Content:** `{ message: 'Movie not found' }`
+   
+   OR
+ 
+   * **Code:** 500 SERVER ERROR <br />
+     **Content:** `{ message : "Something goes wrong" }`
+ 
+ * **Sample Call:**
+ 
+     ```javascript
+       $.ajax({
+         url: "/movie",
+         dataType: "json",
+         type : "DELETE",
+         data: JSON.stringify(
+               { 
+                  "id" : 3
+               }     
+         ),
+         success : function(r) {
+           console.log(r);
+         }
+       });
+     ```
+   
+  ----
+
+
+ #### Update movie:
+ Request overwrite a movie.
+ 
+ * **URL** `/movie`
+ 
+ * **Method:** `PUT` 
+   
+ *  **Data params:**
+ 
+    **Required:**
+         
+       `id=[number]`
+       
+       `title=[string], (max 255 characters)`
+       
+       `year=[integer]`
+       
+       `runtime=[integer]`
+       
+       `director=[string], (max 255 characters)`
+       
+       `genres=[array of string], (min 1)`
+       
+    **Optional:**
+    
+       `actors=[string]`
+       
+       `plot=[string]`
+       
+       `posterUrl=[string]`
+       
+    **Sample body:**
+    ```json
+    { 
+       "id": 3,
+       "title" : "Awesome Movie 3",
+       "runtime": 86,
+       "year": 1986,
+       "genres": ["Comedy"],
+       "director": "Jan Kowalsky",
+       "posterUrl": "https://poster.com/awesome_movie_3"
+    }  
+    ```
+    
+ * **Success Response:**
+ 
+   * **Code:** 200 <br />
+     **Content:** 
+     ```json
+     {
+       "id" : 3
+     }
+     ``` 
+ * **Error Response:**
+ 
+   * **Code:** 400 BAD REQUEST <br />
+     **Content:** `{ message: '<validation message>' }`
+ 
+   OR
+   
+     * **Code:** 400 BAD REQUEST <br />
+       **Content:** `{ message: 'Movie not found' }`
+   
+   OR
+ 
+   * **Code:** 500 SERVER ERROR <br />
+     **Content:** `{ message : "Something goes wrong" }`
+ 
+ * **Sample Call:**
+ 
+     ```javascript
+       $.ajax({
+         url: "/movie",
+         dataType: "json",
+         type : "PUT",
+         data: JSON.stringify(
+            { 
+               "id": 3,
+               "title" : "Awesome Movie 3",
+               "runtime": 86,
+               "year": 1986,
+               "genres": ["Comedy"],
+               "director": "Jan Kowalsky",
+               "posterUrl": "https://poster.com/awesome_movie_3"
+            }   
+         ),
+         success : function(r) {
+           console.log(r);
+         }
+       });
+     ```
+   
+  ----
