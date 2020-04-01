@@ -44,7 +44,7 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
                     posterUrl: movie.posterUrl,
                     genres: movie.genres,
                 }));
-                fs.writeFileSync(this.appConfig.dbSettings.path, JSON.stringify(jsonData));
+                fs.writeFileSync(this.appConfig.dbSettings.path, JSON.stringify(jsonData, null, 4));
                 return true;
             }
             return false;

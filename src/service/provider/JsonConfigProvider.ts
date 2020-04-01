@@ -20,7 +20,7 @@ export class JsonConfigProvider implements IConfigProvider {
 
     public async saveConfig(configObject: Record<string, any>): Promise<boolean> {
         try {
-            fs.writeFileSync(this._path, JSON.stringify(configObject));
+            fs.writeFileSync(this._path, JSON.stringify(configObject, null, 4) );
             return true;
         } catch (e) {
             console.log('Unable to save config');

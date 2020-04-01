@@ -1,11 +1,11 @@
-import { injectable } from 'inversify';
-import { DbTypes } from './DbTypes';
-import { ISettings } from './ISettings';
+import {injectable} from 'inversify';
+import {DbTypes} from './DbTypes';
+import {ISettings} from './ISettings';
 
 @injectable()
 export class DbSettings implements ISettings {
-    private _type: DbTypes;
-    private _path: string;
+    private _type: DbTypes = DbTypes.JSON;
+    private _path: string = 'data/db.json';
 
     get type(): DbTypes {
         return this._type;
