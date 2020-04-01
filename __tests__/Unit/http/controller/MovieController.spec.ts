@@ -73,7 +73,7 @@ describe('MovieController', () => {
 
     describe('update', () => {
         it('should update a movie', async () => {
-            const req = httpMocks.createRequest({ body: {}});
+            const req = httpMocks.createRequest({ body: { id: 1}});
             const res = httpMocks.createResponse();
 
             movieService.updateMovie = async () => undefined;
@@ -85,7 +85,7 @@ describe('MovieController', () => {
         });
 
         it('should return error response if service throw Error', async () => {
-            const req = httpMocks.createRequest({ body: {}});
+            const req = httpMocks.createRequest({ body: {id: 1}});
             const res = httpMocks.createResponse();
 
             movieService.updateMovie = async () => { throw new Error(); };
@@ -103,7 +103,6 @@ describe('MovieController', () => {
             const res = httpMocks.createResponse();
 
             movieService.deleteMovie = async () => undefined;
-            movieValidator.validate = async () => true;
 
             await controller.delete(req, res);
             expect(res.statusCode).toBe(200);
@@ -115,7 +114,6 @@ describe('MovieController', () => {
             const res = httpMocks.createResponse();
 
             movieService.deleteMovie = async () => { throw new Error(); };
-            movieValidator.validate = async () => true;
 
             await controller.delete(req, res);
             expect(res.statusCode).toBe(500);
@@ -130,7 +128,6 @@ describe('MovieController', () => {
 
             const mock = { test: 123 };
             movieService.getRandom = async () => mock as any;
-            movieValidator.validate = async () => true;
 
             await controller.getRandom(req, res);
             expect(res.statusCode).toBe(200);
@@ -145,7 +142,6 @@ describe('MovieController', () => {
 
             const mock = { test: 123 };
             movieService.getRandom = async () => mock as any;
-            movieValidator.validate = async () => true;
 
             await controller.getRandom(req, res);
             expect(res.statusCode).toBe(400);
@@ -159,7 +155,6 @@ describe('MovieController', () => {
 
             const mock = { test: 123 };
             movieService.getRandom = async () => mock as any;
-            movieValidator.validate = async () => true;
 
             await controller.getRandom(req, res);
             expect(res.statusCode).toBe(400);
@@ -170,7 +165,6 @@ describe('MovieController', () => {
             const res = httpMocks.createResponse();
 
             movieService.getRandom = async () => { throw new Error(); };
-            movieValidator.validate = async () => true;
 
             await controller.getRandom(req, res);
             expect(res.statusCode).toBe(500);

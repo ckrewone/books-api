@@ -1,7 +1,7 @@
 import {IMovie} from "../repository/MovieRepository/IMovie";
 
 export class Movie {
-    public id: number = Math.floor(Math.random() + 10000);
+    public id: number = Math.floor(Math.random() * 10000);
     public title: string;
     public year: number;
     public runtime: number;

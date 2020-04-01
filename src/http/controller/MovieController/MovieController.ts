@@ -54,6 +54,10 @@ export class MovieController extends AbstractController implements IMovieControl
 
     public async update(req: Request, res: Response) {
         if (!await this.movieValidate(res, req.body)) { return; }
+        if (!req.body.id) {
+            this.sendErrorResponse(res, 'Valid id is required. Expected number', 400);
+            return;
+        }
         try {
             const movie = await this.movieService.updateMovie(req.body);
             this.sendSuccessResponse(res, movie);
