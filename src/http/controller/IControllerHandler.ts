@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
+import {Request, Response} from 'express';
 
 export interface IControllerHandler {
-    getMethod(controller: any, method: string): (req: Request, res: Response ) => any;
+    getMethod(controller: any, method: string): (req: Request, res: Response) => any;
 }

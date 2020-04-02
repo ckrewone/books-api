@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { IConfigProvider } from './IConfigProvider';
+import {IConfigProvider} from './IConfigProvider';
 
 export class JsonConfigProvider implements IConfigProvider {
     private _path: string;
@@ -20,7 +20,7 @@ export class JsonConfigProvider implements IConfigProvider {
 
     public async saveConfig(configObject: Record<string, any>): Promise<boolean> {
         try {
-            fs.writeFileSync(this._path, JSON.stringify(configObject, null, 4) );
+            fs.writeFileSync(this._path, JSON.stringify(configObject, null, 4));
             return true;
         } catch (e) {
             console.log('Unable to save config');

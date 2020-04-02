@@ -1,11 +1,11 @@
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
-import { inject, injectable } from 'inversify';
+import {inject, injectable} from 'inversify';
 import API_TYPES from '../ApiTypes';
-import { AppConfig } from '../config/AppConfig';
-import { IControllerHandler } from './controller/IControllerHandler';
-import { IMovieController } from './controller/MovieController/IMovieController';
+import {AppConfig} from '../config/AppConfig';
+import {IControllerHandler} from './controller/IControllerHandler';
+import {IMovieController} from './controller/MovieController/IMovieController';
 
 @injectable()
 export class HttpServer {

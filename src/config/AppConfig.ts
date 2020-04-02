@@ -1,6 +1,6 @@
-import { injectable } from 'inversify';
-import { DbSettings } from './DbSettings';
-import { ISettings } from './ISettings';
+import {injectable} from 'inversify';
+import {DbSettings} from './DbSettings';
+import {ISettings} from './ISettings';
 
 @injectable()
 export class AppConfig implements ISettings {

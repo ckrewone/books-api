@@ -4,7 +4,7 @@ import API_TYPES from "../../../ApiTypes";
 import {AppConfig} from "../../../config/AppConfig";
 import {Movie} from "../../../model/Movie";
 import {IMovieRepository} from "../../../repository/MovieRepository/IMovieRepository";
-import { IMovieDataAccessOperations } from '../IMovieDataAccessOperations';
+import {IMovieDataAccessOperations} from '../IMovieDataAccessOperations';
 
 @injectable()
 export class JsonMovieDao implements IMovieDataAccessOperations {
@@ -17,7 +17,9 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
     public async delete(data: Movie): Promise<boolean> {
         const allMovies = await this.movieRepository.getAll();
         const index = allMovies.findIndex((m) => m.id == data.id);
-        if (index === -1 ) { throw new Error('Deleting data failed. Movie not found'); }
+        if (index === -1) {
+            throw new Error('Deleting data failed. Movie not found');
+        }
         allMovies.splice(index, 1);
         return await this.saveMovies(allMovies);
     }
@@ -52,6 +54,6 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
             throw new Error('Unable to save changes');
             console.log('Unabe to save changes. Error: ', e);
         }
-        }
+    }
 
 }

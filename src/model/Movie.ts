@@ -13,7 +13,7 @@ export class Movie {
 
     constructor(data: IMovie) {
         Object.keys(data).forEach((key: string) => {
-            this[ key ] = data[ key ];
+            this[key] = data[key];
         });
     }
 }

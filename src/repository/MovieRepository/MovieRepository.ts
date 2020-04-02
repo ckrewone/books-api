@@ -1,13 +1,14 @@
-import { inject, injectable } from 'inversify';
+import {inject, injectable} from 'inversify';
 import API_TYPES from "../../ApiTypes";
 import {AppConfig} from "../../config/AppConfig";
 import {DbTypes} from "../../config/DbTypes";
-import { Movie } from '../../model/Movie';
-import { IMovieRepository } from './IMovieRepository';
+import {Movie} from '../../model/Movie';
+import {IMovieRepository} from './IMovieRepository';
 
 @injectable()
 export class MovieRepository implements IMovieRepository {
     private movieRepository: IMovieRepository;
+
     constructor(
         @inject(API_TYPES.AppConfig) private appConfig: AppConfig,
         @inject(API_TYPES.MovieRepositoryFactory) private movieRepositoryFactory: (dbType: DbTypes) => IMovieRepository,

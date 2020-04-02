@@ -3,6 +3,7 @@ import {inject, injectable} from 'inversify';
 import API_TYPES from '../../../ApiTypes';
 import {NotFoundError} from "../../../common/errors/NotFoundError";
 import {Movie} from '../../../model/Movie';
+import {IMovie} from "../../../repository/MovieRepository/IMovie";
 import {IMovieService} from '../../../service/movie/IMovieService';
 import {IMovieValidator} from "../../../service/validator/IMovieValidator";
 import {AbstractController} from '../AbstractController';
@@ -33,7 +34,7 @@ export class MovieController extends AbstractController implements IMovieControl
     }
 
     public async getRandom(req: Request, res: Response) {
-        if (req.body?.genres && ( !Array.isArray(req.body.genres) || typeof req.body.genres[0] !== 'string' )) {
+        if (req.body?.genres && (!Array.isArray(req.body.genres) || typeof req.body.genres[0] !== 'string')) {
             this.sendErrorResponse(res, 'Invalid geners type. Required array of string', 400);
             return;
         }
@@ -53,7 +54,9 @@ export class MovieController extends AbstractController implements IMovieControl
     }
 
     public async update(req: Request, res: Response) {
-        if (!await this.movieValidate(res, req.body)) { return; }
+        if (!await this.movieValidate(res, req.body)) {
+            return;
+        }
         if (!req.body.id) {
             this.sendErrorResponse(res, 'Valid id is required. Expected number', 400);
             return;
@@ -70,7 +73,9 @@ export class MovieController extends AbstractController implements IMovieControl
     }
 
     public async create(req: Request, res: Response) {
-        if (!await this.movieValidate(res, req.body)) { return; }
+        if (!await this.movieValidate(res, req.body)) {
+            return;
+        }
         try {
             const id = await this.movieService.createMovie(req.body);
             this.sendSuccessResponse(res, {id});
@@ -89,6 +94,16 @@ export class MovieController extends AbstractController implements IMovieControl
         } else {
             console.log(`Movie with id: ${req.query.id} not found`);
             this.sendErrorResponse(res, 'Movie/s not found', 400);
+        }
+    }
+
+    private async movieValidate(res: Response, movie: IMovie): Promise<boolean> {
+        try {
+            await this.movieValidator.validate(movie);
+            return true;
+        } catch (e) {
+            this.sendErrorResponse(res, e.errors, 400);
+            return false;
         }
     }
 }
