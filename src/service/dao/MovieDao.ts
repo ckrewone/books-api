@@ -1,9 +1,9 @@
-import { inject, injectable } from 'inversify';
+import {inject, injectable} from 'inversify';
 import API_TYPES from '../../ApiTypes';
-import { AppConfig } from '../../config/AppConfig';
-import { DbTypes } from '../../config/DbTypes';
+import {AppConfig} from '../../config/AppConfig';
+import {DbTypes} from '../../config/DbTypes';
 import {Movie} from "../../model/Movie";
-import { IMovieDataAccessOperations } from './IMovieDataAccessOperations';
+import {IMovieDataAccessOperations} from './IMovieDataAccessOperations';
 
 @injectable()
 export class MovieDao implements IMovieDataAccessOperations {

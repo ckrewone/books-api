@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import { injectable } from 'inversify';
-import { IControllerHandler } from './IControllerHandler';
+import {Request, Response} from 'express';
+import {injectable} from 'inversify';
+import {IControllerHandler} from './IControllerHandler';
 
 @injectable()
 export class ControllerHandler implements IControllerHandler {

@@ -1,14 +1,15 @@
 import * as fs from 'fs';
-import { inject, injectable } from 'inversify';
+import {inject, injectable} from 'inversify';
 import API_TYPES from '../../../ApiTypes';
-import { AppConfig } from '../../../config/AppConfig';
-import { Movie } from '../../../model/Movie';
-import { IMovieRepository } from '../IMovieRepository';
+import {AppConfig} from '../../../config/AppConfig';
+import {Movie} from '../../../model/Movie';
+import {IMovieRepository} from '../IMovieRepository';
 
 @injectable()
 export class JsonMovieRepository implements IMovieRepository {
     private movies: Movie[] = [];
     private genres: string[];
+
     constructor(
         @inject(API_TYPES.AppConfig) private appConfig: AppConfig,
     ) {

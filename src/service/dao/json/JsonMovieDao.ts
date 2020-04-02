@@ -4,7 +4,7 @@ import API_TYPES from "../../../ApiTypes";
 import {AppConfig} from "../../../config/AppConfig";
 import {Movie} from "../../../model/Movie";
 import {IMovieRepository} from "../../../repository/MovieRepository/IMovieRepository";
-import { IMovieDataAccessOperations } from '../IMovieDataAccessOperations';
+import {IMovieDataAccessOperations} from '../IMovieDataAccessOperations';
 
 @injectable()
 export class JsonMovieDao implements IMovieDataAccessOperations {
@@ -44,6 +44,6 @@ export class JsonMovieDao implements IMovieDataAccessOperations {
             throw new Error('Unable to save changes');
             console.log('Unabe to save changes. Error: ', e);
         }
-        }
+    }
 
 }
