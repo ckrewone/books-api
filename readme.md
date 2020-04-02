@@ -8,7 +8,7 @@ You can find extended version (CRUD) on branch `dev`
 ----
 1. `yarn install` 
 2. `yarn build`
-3. `yarn start`
+3. `yarn start` // x2 if app-config.json does not exists
 
 ### How run tests:
 1. Unit: 
